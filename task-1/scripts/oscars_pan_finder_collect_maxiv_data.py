@@ -8,7 +8,7 @@
 # Task 1 - Body of Knowledge
 #
 # Data collector for PaNOSC data provider:
-# - Max IV 
+# - Max IV (https://www.maxiv.se.lu/)
 #
 # This script run the data collection script in the correct python environment.
 # This script to leverage the ESS data catalog SciCat API to collect all the public available data and save them in a file named

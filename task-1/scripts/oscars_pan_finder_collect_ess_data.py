@@ -8,11 +8,11 @@
 # Task 1 - Body of Knowledge
 #
 # Data collector for PaNOSC data provider:
-# - ESS (European Spallation Source)
+# - ESS (European Spallation Source, https://ess.eu)
 #
 # This script run the data collection script in the correct python environment.
 # This script to leverage the ESS data catalog SciCat API to collect all the public available data and save them in a file named
-# _../data/ess_data_<timestamp>.json
+# ../data/oscars_pan_finder_ess_data_<timestamp>.json
 #
 # 
 # Version: 3.0

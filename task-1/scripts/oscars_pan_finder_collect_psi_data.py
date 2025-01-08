@@ -8,11 +8,11 @@
 # Task 1 - Body of Knowledge
 #
 # Data collector for PaNOSC data provider:
-# - PSI (Paul Scherrer Institute)
+# - PSI (Paul Scherrer Institute, https://www.psi.ch)
 #
 # This script run the data collection script in the correct python environment.
 # This script to leverage the PSI data catalog SciCat API to collect all the public available data and save them in a file named
-#  ../data/ess_data_<timestamp>.json
+#  ../data/oscars_pan_finder_psi_data_<timestamp>.json
 #
 # 
 # Version: 2.0
