@@ -1,15 +1,22 @@
 #!/usr/bin/env python
 # coding: utf-8
-
-# # OSCARS PaN-Finder
-# ## Retrieve all publicly accessible and published data from data provider: ILL
+#
+#
+# OSCARS project - https://oscars-project.eu/
+# PaN-Finder     - https://oscars-project.eu/projects/pan-finder-photon-and-neutron-federated-knowledge-finder
 # 
-# Data is retrieved from PaNOSC search interface and also from ILL doi portal
+# Task 1 - Body of Knowledge
+#
+# Data collector for PaNOSC data provider:
+# - ILL (Institut Laue-Langevin, https://www.ill.eu/)
+#
+# This script run the data collection script in the correct python environment.
+# This script to leverage the ILL PaNOSC interface and html data catalog to collect all the public available data and save them in a file named
+#  ../data/oscars_pan_finder_ill_data_<timestamp>.json
+#
 # 
 # Version: 1.0
-
-# In[1]:
-
+#
 
 import requests
 import json
@@ -20,59 +27,46 @@ import random
 from bs4 import BeautifulSoup
 import re
 
+print("Retrieving ILL data for OSCARS PaN-Finder project - Task 1")
+print(datetime.datetime.now().isoformat())
+print("----------------------------------------------------------")
 
-# In[2]:
+# ILL PaNOSC API
+panosc_data_provider_url = "https://fairdata.ill.fr/fairdata/api/"
+print("PaNOSC Data Provider Url: " + panosc_data_provider_url)
 
-
-data_provider_url = "https://fairdata.ill.fr/fairdata/api/"
-data_provider_url
-
-
-# In[3]:
-
-
-doi_url = "https://doi.ill.fr/"
-doi_url
+# ILL DOI url
+doi_data_provider_url = "https://doi.ill.fr/"
+print("DOI Data Provider Url: " + doi_data_provider_url)
 
 
-# In[4]:
-
-
+# batch collection settings
 initial_skip = 0
 batch_limit = 1000
 
 
-# PaNOSC search API  endpoints to retrieve documents and datasets
+# Endpoints to retrieve documents and datasets
+panosc_documents_url = urllib.parse.urljoin(panosc_data_provider_url + "/", "documents")
+panosc_documents_count_url = urllib.parse.urljoin(panosc_documents_url + "/", "count")
+panosc_datasets_url = urllib.parse.urljoin(panosc_data_provider_url + "/", "datasets")
 
-# In[5]:
-
-
-document_url = urllib.parse.urljoin(data_provider_url + "/", "documents")
-count_document_url = urllib.parse.urljoin(document_url + "/", "count")
-dataset_url = urllib.parse.urljoin(data_provider_url + "/", "datasets")
-
-print("SciCat urls");
-print(f" - Published Data       : {document_url}")
-print(f" - Published Data Count : {count_document_url}")
-print(f" - Dataset              : {dataset_url}")
+print("Urls used to retrieve data");
+print(f" - PaNOSC Documents       : {panosc_documents_url}")
+print(f" - PaNOSC Documents Count : {panosc_documents_count_url}")
+print(f" - PaNOSC Datasets        : {panosc_datasets_url}")
 
 
-# In[6]:
+# retrieve the count of PaNOSC documents
+res = requests.get(panosc_documents_count_url)
+print(res.text)
+assert(res.status_code == 200)
+number_of_panosc_documents = res.json()
+print("Number of panosc documents available : " + str(number_of_panosc_documents))
 
 
-res = requests.get(count_document_url)
-
-
-# In[7]:
-
-
-res.json()
-
-
-# In[8]:
-
-
-raw_documents = []
+# Retrieve all the PaNOSC documents
+print("Starting panosc document collection...")
+panosc_documents = []
 keep_going = True
 skip = initial_skip
 while keep_going:
@@ -83,46 +77,26 @@ while keep_going:
         })
     }
     res = requests.get(
-        document_url,
+        panosc_documents_url,
         params = params
     )
     current_batch = res.json()
     keep_going = len(current_batch) == batch_limit
-    raw_documents += current_batch
-    #print(f"Skip : {skip}. Params: {params}. Status Code: {res.status_code}. Url: {res.request.url}. Number of results: {len(current_batch)}. Continue: {keep_going}. Total number of datasets retrieved: {len(raw_documents)}")
-    print(".",end="")
+    panosc_documents += current_batch
+    print(".",end="",flush=True)
     skip += len(current_batch)
-    #if skip > 21:
-    #    break
+
+print("")
+print("{} Panosc documents collected".format(len(panosc_documents)))
+
+if len(panosc_documents) == number_of_panosc_documents:
+    print("Correct number of documents collected")
+else:
+    print("Number of PaNOSC documents collected does not match with the count provided")
 
 
-# In[9]:
-
-
-len(raw_documents)
-
-
-# In[10]:
-
-
-t1 = random.choice(raw_documents)
-
-
-# In[11]:
-
-
-t1
-
-
-# In[12]:
-
-
-t1['doi']
-
-
-# In[13]:
-
-
+# Functions to extract information from doi page
+#
 def extractAuthorInfo(item):
     output = {
         "name" : item.text.split("(")[0].strip()
@@ -143,11 +117,6 @@ def extractAuthorInfo(item):
 
     return output
         
-
-
-# In[14]:
-
-
 def extractAuthorsInfo(document_soup):
     authors_html = document_soup.find(
         'h4',
@@ -162,18 +131,12 @@ def extractAuthorsInfo(document_soup):
     ]
 
 
-# In[15]:
-
-
 def extractPublicationYear(document_soup):
     return document_soup.find(
         'h4',
         class_="details-name",
         string=lambda text: "Publication year" in text
     ).parent.text.strip().split(' ')[-1]
-
-
-# In[16]:
 
 
 def extractCycles(document_soup):
@@ -186,9 +149,6 @@ def extractCycles(document_soup):
             string=lambda text: "Cycles" in text
         ).parent.find('li')
     ]
-
-
-# In[124]:
 
 
 def extractInstruments(document_soup):
@@ -206,9 +166,6 @@ def extractInstruments(document_soup):
     ]
 
 
-# In[54]:
-
-
 def extractExperimentParameters(document_soup):
     return {
         item.find('h4').text.strip() : item.find('div').text.strip().split(' ')[-1]
@@ -220,18 +177,12 @@ def extractExperimentParameters(document_soup):
     }
 
 
-# In[88]:
-
-
 def extractItemValue(item_html):
     label = item_html.find('h4')
     if label: 
         label.decompose()
     return (item_html.find('li').text if item_html.find('li') else item_html.text).strip()
         
-
-
-# In[99]:
 
 
 def extractSampleParameters(document_soup):
@@ -246,9 +197,6 @@ def extractSampleParameters(document_soup):
     }
 
 
-# In[132]:
-
-
 def extractProposalNumber(document_soup):
     item = document_soup.find(
         'h4',
@@ -259,39 +207,29 @@ def extractProposalNumber(document_soup):
     return item.text.strip()
 
 
-# In[156]:
-
-
 def extractExperimentalReport(doi_url,document_soup):
     a_items = [item for item in document_soup.find_all("a",class_="btn-info") if 'Experimental Report' in item.text]
     return doi_url[:-1] + a_items[0].attrs['href'] if a_items else ""
 
 
-# In[157]:
-
-
-def scrapeDocumentInformation(doi):
-    document_doi_url = doi_url + doi
+def scrapeDocumentInformation(document_doi_url,doi_data_provider_url):
 
     res = requests.get(document_doi_url)
-    #print(res.content)
 
     document_soup = BeautifulSoup(res.content, "html.parser")
 
-    data_url = doi_url + [
+    data_url = doi_data_provider_url + [
         item 
         for item 
         in document_soup.find_all("a",class_="btn-info") 
         if 'Download Data' in item.text
     ][0].attrs['href']
 
-    proposal_number = ""
-
     proposal_id = data_url.split('&')[-1].split("=")[-1]
 
     return {
         'documentDoiUrl': document_doi_url,
-        'experimentalReportUrl': extractExperimentalReport(doi_url,document_soup),
+        'experimentalReportUrl': extractExperimentalReport(doi_data_provider_url,document_soup),
         'dataUrl': data_url,
         'proposalNumber' : extractProposalNumber(document_soup),
         'proposalId': proposal_id,
@@ -306,38 +244,40 @@ def scrapeDocumentInformation(doi):
     }
 
 
-# In[159]:
-
-
+# Loop on all the documents and retrieve the full record from ESS SciCat
+print("Preparing raw data for task 1")
 documents = []
-for raw_document in raw_documents:
+errors = []
+for document in panosc_documents:
+    document_doi_url = doi_data_provider_url + document['doi']
     try:
         documents.append({
-            'panosc':raw_document,
-            'document':scrapeDocumentInformation(raw_document['doi'])
+            'panosc':document,
+            'document':scrapeDocumentInformation(document_doi_url,doi_data_provider_url)
         })
-        print(".",end="")
+        print(".",end="",flush=True)
     except:
-        print("\n" + raw_document['doi'])
-    
+        print("+",end="",flush=True)
+        errors.append(document_doi_url)
+   
+print("")
+print("Raw data for task 1 preparation completed")
+
+print("{} errors encountered".format(len(errors)))
+for error in errors:
+    print(" - " + error)
 
 
-# In[160]:
-
-
-data_file_name = "../data/ill_open_data_" + datetime.datetime.now().strftime("%Y%m%d%H%M%S%f") + ".json"
-data_file_name
-
-
-# In[161]:
-
-
-with open(data_file_name,'w') as fh:
+# Prepare data file name and save
+output_data_file = "../data/oscars_pan_finder_ill_data_" + datetime.datetime.now().strftime("%Y%m%d%H%M%S%f") + ".json"
+print("Saving raw data in file : " + output_data_file)
+with open(output_data_file,'w') as fh:
     json.dump(documents,fh)
 
 
-# In[ ]:
-
+print("----------------------------------------------------------")
+print(datetime.datetime.now().isoformat())
+print("ILL data for OSCARS PaN-Finder project retrieved and saved")
 
 
 
