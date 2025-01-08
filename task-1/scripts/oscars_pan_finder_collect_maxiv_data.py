@@ -8,14 +8,14 @@
 # Task 1 - Body of Knowledge
 #
 # Data collector for PaNOSC data provider:
-# - ESS (European Spallation Source)
+# - Max IV 
 #
 # This script run the data collection script in the correct python environment.
 # This script to leverage the ESS data catalog SciCat API to collect all the public available data and save them in a file named
-# _../data/ess_data_<timestamp>.json
+#  ../data/oscar_pan_finder_maxiv_data_<timestamp>.json
 #
 # 
-# Version: 3.0
+# Version: 2.0
 #
 #
 
@@ -27,18 +27,17 @@ import urllib.parse
 import datetime
 import random
 
-print("Retrieving ESS data for OSCARS PaN-Finder project - Task 1")
+print("Retrieving MaxIV data for OSCARS PaN-Finder project - Task 1")
 print(datetime.datetime.now().isoformat())
 print("----------------------------------------------------------")
 
-
 # ESS PaNOSC API
-panosc_data_provider_url = "https://search.panosc.ess.eu/"
+panosc_data_provider_url = "https://searchapi.maxiv.lu.se/api"
 print("PaNOSC Data Provider Url: " + panosc_data_provider_url)
 
 
 # Url of the public facing data catalog running at ESS
-catalog_data_provider_url = "https://scicat.ess.eu/api/v3"
+catalog_data_provider_url = "https://scicat.maxiv.lu.se/api/v3"
 print("Catalog Data Catalog Url: " + catalog_data_provider_url)
 
 # batch collection settings
@@ -65,53 +64,52 @@ print(f" - Catalog Published Data Count : {catalog_publisheddata_count_url}")
 print(f" - Catalog Dataset              : {catalog_datasets_url}")
 
 
-# ESS PaNOSC API is momentarily off-line
-# skipping this portion
 # retrieve the count of PaNOSC documents
-#res = requests.get(panosc_documents_count_url)
-#print(res.text)
-#assert(res.status_code == 200)
-#number_of_panosc_documents = res.json()["count"]
-#print("Number of panosc documents available : " + str(number_of_panosc_documents))
-#
-## Retrieve all the PaNOSC documents
-#print("Starting panosc document collection...")
-#panosc_documents = []
-#keep_going = True
-#skip = initial_skip
-#while keep_going:
-#    params = {
-#        "filter" : json.dumps({
-#            "skip" : skip,
-#            "limit" : batch_limit
-#        })
-#    }
-#    res = requests.get(
-#        panosc_documents_url,
-#        params = params
-#    )
-#    current_batch = res.json()
-#    keep_going = len(current_batch) == batch_limit
-#    panosc_documents += current_batch
-#    print(".",end="")
-#    skip += len(current_batch)
-#
-#print("")
-#print("Panosc documents collected")
-#
-#assert(len(panosc_documents) == number_of_panosc_documents)
-#print("Correct number of documents collected")
-#
-#print("")
-#print("Preparing panosc document to be used")
-#panosc_documents = {
-#  document['pid']
-#  for document
-#  in panosc_documents
-#}
-#print("Done")
+res = requests.get(panosc_documents_count_url)
+print(res.text)
+assert(res.status_code == 200)
+number_of_panosc_documents = res.json()["count"]
+print("Number of panosc documents available : " + str(number_of_panosc_documents))
 
-panosc_documents = {}
+# Retrieve all the PaNOSC documents
+print("Starting panosc document collection...")
+panosc_documents = []
+keep_going = True
+skip = initial_skip
+while keep_going:
+    params = {
+        "filter" : json.dumps({
+            "skip" : skip,
+            "limit" : batch_limit
+        })
+    }
+    res = requests.get(
+        panosc_documents_url,
+        params = params
+    )
+    current_batch = res.json()
+    keep_going = len(current_batch) == batch_limit
+    panosc_documents += current_batch
+    print(".",end="")
+    skip += len(current_batch)
+
+print("")
+print("{} Panosc documents collected".format(len(panosc_documents)))
+
+if len(panosc_documents) == number_of_panosc_documents:
+  print("Correct number of documents collected")
+else:
+  print("Number of PaNOSC documents collected does not match with the count provided")
+
+
+print("")
+print("Preparing panosc document to be used")
+panosc_documents = {
+  document['pid']: document
+  for document
+  in panosc_documents
+}
+print("Done")
 
 # retrieve the count of open documents present in the catalog
 res = requests.get(catalog_publisheddata_count_url)
@@ -139,19 +137,20 @@ while keep_going:
     current_batch = res.json()
     keep_going = len(current_batch) == batch_limit
     open_documents += current_batch
-    print(".",end="")
+    print(".",end="",flush=True)
     skip += len(current_batch)
 
 print("")
 print("Catalog open documents collected")
 
 # Confirm that we retrieved the correct amount of documents
-assert(len(open_documents) == number_of_open_documents)
-print("Correct number of open documents collected")
+if len(open_documents) == number_of_open_documents:
+  print("Correct number of documents collected")
+else:
+  print("Number of open documents collected ({}) does not match with the count provided".format(len(open_documents)))
 
 
 # Functions to retrieve individual datasets from published data record
-
 def get_dataset(pid):
     res = requests.get(
         catalog_datasets_url + "/" + urllib.parse.quote_plus(pid)
@@ -177,24 +176,25 @@ for document in open_documents:
         "document" : document,
         "datasets" : get_datasets(document['pidArray'])
     }
-    if document['id'] in panosc_documents.keys():
-        entry['panosc'] = panosc_documents[document['id']]
+    if document['doi'] in panosc_documents.keys():
+        entry['panosc'] = panosc_documents[document['doi']]
     documents.append(document)
-    print(".",end="")
-
+    print(".",end="",flush=True)
 
 print("")
 print("Raw data for task 1 preparation completed")
 
 
 # Prepare data file name and save
-output_data_file = os.path.abspath("../data/oscars_pan_finder_ess_data_" + datetime.datetime.now().strftime("%Y%m%d%H%M%S%f") + ".json")
+output_data_file = "../data/oscars_pan_finder_maxiv_data_" + datetime.datetime.now().strftime("%Y%m%d%H%M%S%f") + ".json"
 print("Saving raw data in file : " + output_data_file)
 with open(output_data_file,'w') as fh:
     json.dump(documents,fh)
 
+
 print("----------------------------------------------------------")
 print(datetime.datetime.now().isoformat())
-print("ESS data for OSCARS PaN-Finder project retrieved and saved")
+print("MaxIV data for OSCARS PaN-Finder project retrieved and saved")
+
 
 

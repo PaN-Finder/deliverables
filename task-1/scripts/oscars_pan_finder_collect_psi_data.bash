@@ -6,10 +6,10 @@
 # Task 1 - Body of Knowledge
 #
 # Data collector for PaNOSC data provider:
-# - ESS (European Spallation Source, https://ess.eu)
+# - PSI (Paul Scherrer Institute, https://www.psi.ch)
 #
 # This script run the data collection script in the correct python environment.
 #
 
-micromamba run -n oscars-pan-finder-task-1 ./oscars_pan_finder_collect_ess_data.py
+micromamba run -n oscars-pan-finder-task-1 ./oscars_pan_finder_collect_psi_data.py
 
