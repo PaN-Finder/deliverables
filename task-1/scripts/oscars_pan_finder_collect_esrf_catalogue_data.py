@@ -1,15 +1,30 @@
 #!/usr/bin/env python
 # coding: utf-8
-
-# OSCARS PaN-Finder
+#
+#
+# OSCARS project - https://oscars-project.eu/
+# PaN-Finder     - https://oscars-project.eu/projects/pan-finder-photon-and-neutron-federated-knowledge-finder
 # 
-# Retrieve all publicly accessible and published data from data provider: ESRF
-# Original data is from PaNOSC and saved in a file
-# Additional data is retrieved from ESRF doi portal
+# Task 1 - Body of Knowledge
+#
+# Data collector for PaNOSC data provider:
+# - ESRF (European Synchrotron Radiation Facility, https://www.esrf.fr/)
+#
+# This script run the data collection script in the correct python environment.
+# This script to leverage the ESRF data portal to collect additional information on each PaNOSC document.
+# Each document is saved in a separate file named:
+#  ../data/esrf/esrf_document_<pid>.json
+#
+# Usage: oscars_pan_finder_collect_esrf_catalogue_data <panosc_documents>.json [<number_of_documents_to_process>]
+#
+# - panosc_documents.json is the json file containing the PaNOSC documents saved by the script oscars_pan_finder_collect_esrf_panosc_documents.py
+# - number_of_documents_to_process is the number of documents to process in this run. 
+#   Please set it to anynumber less than or equal to zero to download all the documents
+#
+# documents that already present in the folder are not downloaded
 # 
 # Version: 3.0
 #
-# Usage: oscars_pan_finder_esrf_catalogue_data_2 <panosc_documents>.json <number of documents to process>
 
 
 import requests
@@ -21,21 +36,24 @@ import random
 from bs4 import BeautifulSoup
 import re
 from playwright.sync_api import sync_playwright, expect
-#from playwright.async_api import async_playwright, expect
 from IPython.display import display, JSON
 import sys
 
 panosc_documents_file = sys.argv[1]
 number_of_documents_to_process = int(sys.argv[2]) if len(sys.argv)>2 else 5
 
+print("Retrieving ESRF data for OSCARS PaN-Finder project - Task 1 - Step 1")
+print(datetime.datetime.now().isoformat())
+print("----------------------------------------------------------")
+print("Input arguments:")
+print(" - PaNOSC Document input file     : {}".format(panosc_documents_file))
+print(" - Number of documents to process : {}".format(number_of_documents_to_process))
+print("")
+
 # PaNOSC API url 
-data_provider_url = "https://icatplus.esrf.fr/api"
-print("Data provider url : " + data_provider_url)
+panosc_data_provider_url = "https://icatplus.esrf.fr/api"
+print("PaNOSC Data Provider Url : " + panosc_data_provider_url)
 
-
-# DOI landing page url (not used)
-doi_url = "https://doi.esrf.fr/"
-print("DOI landing page url : " + doi_url)
 
 # Internal data API url
 data_portal_base_url = "https://data.esrf.fr/investigation/<PID>/datasets"
@@ -48,23 +66,16 @@ batch_limit = 1000
 
 
 # Prepare all the endpoints needed to retrieve documents (both from PaNOSC and ESRF catalogue) and realted information such datasets, files and samples
-panosc_documents_url = urllib.parse.urljoin(data_provider_url + "/", "Documents")
-panosc_documents_count_url = urllib.parse.urljoin(panosc_documents_url + "/", "count")
-panosc_datasets_url = urllib.parse.urljoin(data_provider_url + "/", "datasets")
-doi_base_url = urllib.parse.urljoin(data_provider_url + "/../", "doi/<DOI>/")
+doi_base_url = urllib.parse.urljoin(panosc_data_provider_url + "/../", "doi/<DOI>/")
 datacite_base_url = urllib.parse.urljoin(doi_base_url, "json-datacite")
-#reports_base_url = urllib.parse.urljoin(doi_base_url, "reports")
-catalogue_url = urllib.parse.urljoin(data_provider_url + "/", "../catalogue/<SESSION_TOKEN>/")
+catalogue_url = urllib.parse.urljoin(panosc_data_provider_url + "/", "../catalogue/<SESSION_TOKEN>/")
 catalogue_investigation_url = urllib.parse.urljoin(catalogue_url, "investigation")
 catalogue_dataset_url = urllib.parse.urljoin(catalogue_url, "dataset")
 catalogue_sample_url = urllib.parse.urljoin(catalogue_url, "samples")
 catalogue_datafile_url = urllib.parse.urljoin(catalogue_url, "datafile")
 
-print("Listing all urls used below");
-print(f" - PaNOSC Documents            : {panosc_documents_url}")
-print(f" - PaNOSC Documents Count      : {panosc_documents_count_url}")
+print("Urls used to retrieve data");
 print(f" - Datacite base url           : {datacite_base_url}")
-#print(f" - Reports base url            : {reports_base_url}")
 print(f" - Catalogue base url          : {catalogue_url}")
 print(f" - Catalogue Investigation url : {catalogue_investigation_url}")
 print(f" - Catalogue Dataset url       : {catalogue_dataset_url}")
@@ -73,6 +84,7 @@ print(f" - Catalogue Datafile url      : {catalogue_datafile_url}")
 
 
 # retrieve list of panosc documents from file
+print("")
 print("Input file with PaNOSC documents : ", panosc_documents_file)
 with open(panosc_documents_file,"r") as fh:
     input_data = json.load(fh)
@@ -83,8 +95,7 @@ print("Number of panosc documents : " + str(number_of_panosc_documents))
 number_of_documents_to_process = len(input_data) \
     if number_of_documents_to_process<1 \
     else number_of_documents_to_process
-
-#number_of_processed_documents = sum([1 if "datasets" in document.keys() else 0 for document in input_data])
+print("Updated number of documents to process : {}".format(number_of_documents_to_process))
 
 # Find a document/proposal that is not in its embargo period
 print("Selecting random document to initiate session on data portal")
@@ -98,11 +109,11 @@ temp_document = random.choice([
     )
 ])
 
-print(temp_document)
+print("PID of document selected : {}".format(temp_document['pid']))
 
 # Open the data portal so we can obtain a session id to use for collecting all other information
 data_portal_url = re.sub("<PID>",temp_document['pid'],data_portal_base_url)
-print("Data portal url : " + data_portal_url)
+print("Document data portal url : " + data_portal_url)
 
 
 # To be sure to collect all the api calls, we wait for the data portal app (which is react) to populate the last  download button in list of datasets
@@ -139,9 +150,9 @@ with sync_playwright() as p:
 
 
 catalogue_requests = [item for item in data_requests if "catalogue" in item['url']]
-assert(len(catalogue_requests) > 0)
+assert len(catalogue_requests) > 0, "No background requests intercepted from data catalogue app"
 session_token = urllib.parse.urlparse(catalogue_requests[0]["url"]).path.split('/')[2]
-assert(session_token)
+assert session_token, "No session token retrieved"
 print("Current session token : " + session_token)
 
 
@@ -256,6 +267,9 @@ def retrieve_datasets(session_token,pid):
         return "Error retrieving resource"
 
 
+# 
+# samples can be found from the documents/datasets information
+#
 # def retrieve_samples(session_token,pid):
 #     """
 #     Retrieve all the samples associated with this document
@@ -292,6 +306,10 @@ def retrieve_datasets(session_token,pid):
 #         return "Error retrieving resource"
         
 
+#
+# We skip retrieving data files as their number is quite high and resource intense
+# also they are not key to our system, at least for now
+#
 # def retrieve_datafiles(session_datafiles_url,pid):
 #     """
 #     Retrieve all the datafiles associated with this document and its datasets
@@ -381,4 +399,10 @@ for document in input_data[:number_of_documents_to_process]:
 
     document_counter += 1
 
-print("Done")
+print("Processed all documents")
+
+
+print("----------------------------------------------------------")
+print(datetime.datetime.now().isoformat())
+print("ESRF catalogue data for OSCARS PaN-Finder project retrieved and saved")
+
