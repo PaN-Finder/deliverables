@@ -389,7 +389,7 @@ for document in input_data[:number_of_documents_to_process]:
     if document_file:
         print(" - document already retrieved {}".format(document_file[0]))
     else:
-        document_file =  data_folder + "/esrf_document_" + pid + "_" + datetime.datetime.now().strftime("%Y%m%d%H%M%S%f") + ".json"
+        document_file =  data_folder + "/esrf_document_" + pid + ".json"
         print("Saving data in file: " + document_file)
 
         output_data = retrieve_all_data(session_token,document["panosc"])
