@@ -11,7 +11,7 @@ THe name format is as follow:
 
 where:
 - facility_name is the acronym of the facility from where the data in the file has been collected from
-- timestamp is the date and time of when the file has been collected and is formatted as %YYYY%mm%dd%HH%MM%SS%micro_seconds
+- timestamp is the date and time of when the file has been collected and is formatted as `%YYYY%mm%dd%HH%MM%SS%micro_seconds`
 - the extension can be `.json` or `.json.zip`. The latter one indicates that the file has been zipped to reduce the size and been able to include it in the repo
 
 
