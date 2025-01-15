@@ -22,11 +22,21 @@ The deliverables for this task are:
 ### Setup
 
 In order to run the data collection scripts, users are required to set up the proper environment.
-The environment requires the following application and it has been tested on Linux machine (Specifically Ubuntu distribution)
+The script `setup_environment.bash` has been provided under the scripts folder.
+This script has been created on an ubuntu systems where the `uname` command output is the following:
+```
+> uname -a
+Linux <hostname> 6.8.0-51-generic #52~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Dec  9 15:00:52 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+```
+In case, users are running the data collection on a different linuc distribution or os, commands may vary, but this script and the how-to below should help.
+
+### Application needed
+The environment requires the following application and it has been tested on a Linux machine (Specifically Ubuntu distribution)
 - bash terminal
 - mamba or micromamba package management (https://mamba.readthedocs.io/en/latest/index.html)
 - jq cli (https://jqlang.github.io/jq/)
 
+### How-to
 Following are instructions on how to properly set up the working environment:
 - open a bask terminal
 - install mamba or micromamba.
@@ -63,7 +73,7 @@ Following are instructions on how to properly set up the working environment:
   ```
 - create the mamba environment _named oscars-pan-finder-task-1_ weith the correct python version and libraries
   ```
-  > micromamba create -n oscars-pan-finder-task-1 -f oscars-pan-finder-environment.yaml -c conda-forge
+  > micromamba create -n oscars-pan-finder-task-1 -f ../oscars-pan-finder-environment.yaml -c conda-forge
   ```
 
 - install _jq_ program
@@ -71,14 +81,27 @@ Following are instructions on how to properly set up the working environment:
   > sudo apt install jq
   ```
 
+- install os libraries for headless browser python library.
+  The name of the libraries are specific for the ubuntu version specified in the the __setup__ section. For your OS or linux distribution, the names might be different.
+  ```
+  sudo apt install -y ffmpeg libavif13 libgstreamer-plugins-bad1.0-0
+  ```
+
+- install and initialize the python library with headless browsers
+  ```
+  > micromamba install playwright-python
+  > micromamba run -n oscars-pan-finder-task-1 playwright install
+  ```
+
 ### Collect data
-
 Cd into the scripts folder for task 1 and run in order all the data acquisition shell scripts.
-
-
-First of all activate the python environment:
 ```
-> 
-micromamba activate oscars-pan-finder-task-1
-micromamba run -n oscars-pan-finder-task-1 mycommand
+> oscars_pan_finder_collect_esrf_data.bash
+> oscars_pan_finder_collect_ess_data.bash
+> oscars_pan_finder_collect_ill_data.bash
+> oscars_pan_finder_collect_maxiv_data.bash
+> oscars_pan_finder_collect_psi_data.bash
 ```
+
+Run time of each command considerably varies from many factors. You should run the commands in a terminal manager which allows disconnections, such as screen (https://www.gnu.org/software/screen/), so the command can run to completion.
+
