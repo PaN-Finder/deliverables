@@ -179,7 +179,7 @@ for document in open_documents:
     }
     if document['id'] in panosc_documents.keys():
         entry['panosc'] = panosc_documents[document['id']]
-    documents.append(document)
+    documents.append(entry)
     print(".",end="")
 
 
