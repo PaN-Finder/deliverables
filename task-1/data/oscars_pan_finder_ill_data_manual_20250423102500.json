@@ -1,0 +1,158 @@
+[
+  {
+    "panosc": {
+      "pid": "10.5291/ILL-DATA.8-02-889",
+      "type": "proposal",
+      "isPublic": true,
+      "title": "Curvature-induced lipid segregation studied by grazing incidence neutron scattering on nanoparticle-supported lipid bilayers (NP-SLB)",
+      "summary": "Biological membrane in plane organisation is a challenging topic, specially since it has been suggested to depend on curvature. So far the main approach to study curvature-induced in plane phase separation has been through the approach of fluorescent techniques and liposomes. Here we propose to use grazing incidence neutron scattering to explore the signal from a well ordered nanoparticle coated surface and use it as a solid substrate to form curved supported lipid bilayers by vesicle fusion. The curvature of the membranes will be tuned by the size of the nanoparticles in the surface coating and specular and off-specular reflectivity will be used to probe the in-in plane lipid organisation and the SLD distribution normal to the surface.",
+      "doi": "10.5291/ILL-DATA.8-02-889",
+      "startDate": null,
+      "endDate": null,
+      "releaseDate": "2025-04-12T00:00:00.000Z",
+      "license": "CC-BY",
+      "keywords": null,
+      "score": null
+    },
+    "document": {
+      "documentDoiUrl": "https://doi.ill.fr/10.5291/ILL-DATA.8-02-889",
+      "experimentalReportUrl": "https://doi.ill.fr/10.5291/ILL-DATA.8-02-889/experimental-report",
+      "dataUrl": "https://data.ill.eu/proposal/?infoView=data&proposalId=83631",
+      "proposalNumber": "8-02-889",
+      "proposalId": "83631",
+      "instruments": [
+        {
+          "name": "FIGARO ( horizontal reflectometer )",
+          "url": "http://www.ill.eu/figaro"
+        }
+      ],
+      "metadata": {
+        "authors": [
+          {
+            "name": "Nicolo Paracini"
+          },
+          {
+            "name": "Marite CARDENAS",
+            "ids": [
+	      {
+	        "type": "ORCID",
+	        "id": "0000-0003-0392-3540",
+	        "url": "http://orcid.org/0000-0003-0392-3540"
+	      },
+	      {
+	        "type": "ResearcherID",
+	        "id": "O-4669-2014",
+	        "url": "http://www.researcherid.com/rid/O-4669-2014"
+	      }
+	    ]
+          },
+          {  
+            "name": "Yubexi Correa",
+            "ids": [
+              {  
+                "type": "ORCID",
+                "id": "0000-0003-3006-4198",  
+	     	"url": "http://orcid.org/0000-0003-3006-4198"
+              }
+	    ]
+	  },
+          {
+            "name": "Christopher J. Garvey",
+            "ids": [
+	      {
+	        "type": "ORCID",
+	        "id": "0000-0001-6496-7008",
+	        "url": "http://orcid.org/0000-0001-6496-7008"
+	      },
+	      {
+	        "type": "ResearcherID",
+	        "id": "E-6475-2010",
+	        "url": "http://www.researcherid.com/rid/E-6475-2010"
+	      }
+	    ]
+          },
+          {
+	    "name": "GUTFREUND Philipp"
+	  },
+          { 
+            "name": "Armando Maestro",
+            "ids": [
+              { 
+                "type": "ORCID",
+                "id": "0000-0002-7791-8130",
+                "url": "http://orcid.org/0000-0002-7791-8130"
+              },
+              { 
+                "type": "ResearcherID",
+                "id": "M-7776-2015",
+                "url": "http://www.researcherid.com/rid/M-7776-2015"
+              }
+            ]
+          },
+          {
+            "name": "WOLFF Maximilian"
+          }
+        ],
+        "publicationYear": "2020",
+        "cycles": [
+          "20203 (11-08-2020 - 28-09-2020 )"
+        ],
+        "experimentalParameters": {
+          "Experiment moment": "0.01-0.2"
+        },
+        "sampleParameters": {
+          "Formula": "d54DMPC\nCardiolipin\nSilica nanoparticles"
+        }
+      }
+    }
+  },
+  {
+    "panosc": {
+      "pid": "10.5291/ILL-DATA.8-02-1023",
+      "type": "proposal",
+      "isPublic": true,
+      "title": "Characterization of chlorpromazine's insertion into the lipid bilayer",
+      "summary": "Antipsychotics are used for treatment of several psychiatric disorders, such as schizophrenia. Their main mode of action is binding to dopamine D2 receptor (D2R) in the brain where they exert their antagonistic activity. Dopamine, the endogenous ligand, can access its receptor (D3R) either directly via the classical receptor pocket or, presumably, via a lipid pathway. The importance of this alternative pathway is very much plausible and worth investigating for interaction of antipsychotics with another dopaminergic receptor, D2R. Detailed information on such systems is key to establishing novel therapeutic interventions. The use of specular reflectometry method will allow us to gain further insight into the interaction of a commonly used antipsychotic: chlorpromazine with a lipid bilayer containing POPC (referential zwitterionic lipid) at different pH values, as well as the effect of membrane charge and fluidity. This approach will allow us to gather yet missed information on such interactions, namely about membrane insertion depth and changes in membrane thickness, which has resulted quite controversial in the field.",
+      "doi": "10.5291/ILL-DATA.8-02-1023",
+      "startDate": null,
+      "endDate": null,
+      "releaseDate": "",
+      "license": "CC-BY",
+      "keywords": null,
+      "score": null
+    },
+    "document": {
+      "documentDoiUrl": "https://doi.ill.fr/10.5291/ILL-DATA.8-02-1023",
+      "experimentalReportUrl": "",
+      "dataUrl": "https://data.ill.eu/proposal/?infoView=data&proposalId=90335",
+      "proposalNumber": "8-02-1023",
+      "proposalId": "90335",
+      "instruments": [
+        {
+          "name": "FIGARO ( horizontal reflectometer )",
+          "url": "http://www.ill.eu/figaro"
+        }
+      ],
+      "metadata": {
+        "authors": [
+          {
+            "name": "GORSE Ana"
+          },
+          {
+            "name": "ALVES Isabel"
+          },
+          {
+            "name": "Nicolo Paracini"
+          },
+          {
+	    "name": "RASCOL Estelle"
+          }
+        ],
+        "publicationYear": "2024",
+        "cycles": [
+          "20241 (27-02-2024 - 16-04-2024 )"
+        ]
+      }
+    }
+  }
+]
