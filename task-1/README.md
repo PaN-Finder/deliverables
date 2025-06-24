@@ -105,3 +105,8 @@ Cd into the scripts folder for task 1 and run in order all the data acquisition 
 
 Run time of each command considerably varies from many factors. You should run the commands in a terminal manager which allows disconnections, such as screen (https://www.gnu.org/software/screen/), so the command can run to completion.
 
+### Folders
+- scripts: scripts used to scrape data from the facilities' data catalogue and PaNOSC apis.
+- data: json data file containing the facility data scraped used the scripts
+- backup: development database dump 
+
