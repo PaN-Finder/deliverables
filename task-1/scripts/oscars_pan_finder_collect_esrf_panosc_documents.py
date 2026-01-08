@@ -51,10 +51,10 @@ def main():
         action="store_true",
     )
     args = parser.parse_args()
-    output_file = args.output_file
+    output_file = os.path.abspath(args.output_file)
     include_entries = args.include_entries
 
-    print("Retrieving ESRF data from PaNOSC endpoint for OSCARS PaN-Finder project - Task 1 - Step 1")
+    print("OSCARS PaN-Finder project - Task 1 - ESRF - oscars_pan_finder_collect_esrf_panosc_documents - BEGIN")
     print(datetime.datetime.now().isoformat())
     print("----------------------------------------------------------")
 
@@ -123,7 +123,7 @@ def main():
 
     print("----------------------------------------------------------")
     print(datetime.datetime.now().isoformat())
-    print("ESRF PaNOSC documents for OSCARS PaN-Finder project retrieved and saved")
+    print("OSCARS PaN-Finder project - Task 1 - ESRF - oscars_pan_finder_collect_esrf_panosc_documents - END")
 
 if __name__ == "__main__":
     main()

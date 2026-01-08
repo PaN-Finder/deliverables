@@ -54,6 +54,7 @@ def get_config(data_portal_config_esrf_file: None):
     print("Config file : ", data_portal_config_esrf_file)
     if not os.path.exists(data_portal_config_esrf_file):
         print("Get config from portal")
+        print(f"Config url  : {settings.data_portal_config_url}")
         res = requests.get(settings.data_portal_config_url)
         print(" -- configuration request result : ", res.status_code)
         config = res.json()
@@ -502,14 +503,14 @@ def main():
     # transfer input to internal variables
     doi=args.doi
     panosc_entry = args.panosc_entry
-    panosc_input_file=args.panosc_input_file
-    conf_file = args.conf_file
+    panosc_input_file = os.path.abspath(args.panosc_input_file) if args.panosc_input_file else ""
+    conf_file = os.path.abspath(args.conf_file)
     include_samples = args.include_samples
     include_datafiles = args.include_datafiles
     include_users = args.include_users
-    output_folder = args.output_folder
+    output_folder = os.path.abspath(args.output_folder)
 
-    print("Retrieving ESRF single entry for OSCARS PaN-Finder project - Task 1 - BEGIN")
+    print("OSCARS PaN-Finder project - Task 1 - ESRF - oscars_pan_finder_collect_esrf_entry - BEGIN")
     print("Version 4.0")
     print(datetime.datetime.now().isoformat())
     print("----------------------------------------------------------")
@@ -581,7 +582,7 @@ def main():
             json.dump(entry, fh)
     print("----------------------------------------------------------")
     print(datetime.datetime.now().isoformat())
-    print("Retrieving ESRF single entry for OSCARS PaN-Finder project - Task 1 - END")
+    print("OSCARS PaN-Finder project - Task 1 - ESRF - oscars_pan_finder_collect_esrf_entry - END")
 
 
 

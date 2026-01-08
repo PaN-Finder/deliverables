@@ -31,7 +31,7 @@ data_portal_frontend_url = "https://data.esrf.fr"
 data_portal_api_base_url = "https://icatplus.esrf.fr"
 
 # config file
-data_portal_config_url = "https://icatplus.esrf.fr/config/api.config.json"
+data_portal_config_url = "https://data.esrf.fr/config/api.config.json"
 
 # Prepare all the endpoints needed to retrieve entries
 datacite_base_url = "https://icatplus.esrf.fr/doi/<DOI>/json-datacite"
