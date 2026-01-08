@@ -550,6 +550,7 @@ def main():
         reports_entries = "Not public"
         datasets_entries = "Not public"
         samples_entries = "Not public"
+        users_entries = "Not public"
         if is_public:
             reports_entries = retrieve_reports(doi)
 
