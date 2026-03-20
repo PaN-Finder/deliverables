@@ -50,7 +50,7 @@ print("PaNOSC Data Provider Url: " + panosc_data_provider_url)
 
 
 # Url of the public facing data catalog running at DESY
-catalog_data_provider_url = "https://public-data.desy.de/api/v3"
+catalog_data_provider_url = "https://fsdata.desy.de/api/v3"
 print("Catalog Data Catalog Url: " + catalog_data_provider_url)
 
 # batch collection settings
@@ -187,8 +187,8 @@ for document in open_documents:
         "document" : document,
         "datasets" : get_datasets(document['pidArray'])
     }
-    if document['id'] in panosc_documents.keys():
-      entry['panosc'] = panosc_documents[document['id']]
+    if document['doi'] in panosc_documents.keys():
+      entry['panosc'] = panosc_documents[document['doi']]
     documents.append(entry)
     print(".",end="")
 
