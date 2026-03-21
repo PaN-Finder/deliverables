@@ -102,11 +102,11 @@ Project summary document
 
       Status: To be done
 
-- __7.b__  ![Done](images/in_progress.png)   
+- __7.b__  ![Done](images/done.png)   
 Presentations and Users Interviews  
 _(Formerly: Two community meetings/workshops)_  
 
-      Status: In progress
+      Status: Done
 
 - __7.c__  ![Done](images/to_be_done.png)  
 One presentation or a poster  
