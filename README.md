@@ -96,13 +96,13 @@ Code repository containing the update service
       Status: To be done
 
 ### 7 Community engagement
-	
-- __7.a__  ![Done](images/to_be_done.png)   
+
+- __7.a__  ![Done](images/to_be_done.png)
 Project summary document  
 
       Status: To be done
 
-- __7.b__  ![Done](images/done.png)   
+- __7.b__  ![Done](images/done.png)
 Presentations and Users Interviews  
 _(Formerly: Two community meetings/workshops)_  
 
