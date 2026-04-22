@@ -275,6 +275,7 @@ def retrieve_doi_datacite(doi_url):
                 #headers={"Accept": "application/json"},
             )
             print(" -- request result : ", res.status_code)
+            doi_datacite_data = res.json()
 
         except:
             print("impossible to retrieve datacite info")
@@ -310,7 +311,7 @@ def retrieve_datacite_entry(datacite_url):
                 headers={"Accept": "application/json"},
             )
             print(" -- request result : ", res.status_code)
-            datacite_data = res.json()
+            datacite_data = res.json()["data"]
 
         except:
             print("impossible to retrieve datacite entry")
@@ -753,6 +754,15 @@ def extract_instruments_from_investigations(investigation_entries):
     ]
     return instruments
 
+
+def extract_citations_from_datacite(datacite_entry):
+    citations = [
+        e["id"]
+        for e
+        in datacite_entry["relationships"]["citations"]["data"]
+    ]
+    return list(set(citations))
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -853,6 +863,11 @@ def main():
 
         doi_datacite_entry = retrieve_doi_datacite(doi_url)
         datacite_entry = retrieve_datacite_entry(datacite_url)
+        citation_entries = extract_citations_from_datacite(datacite_entry)
+        datacite_entry = settings.remove_fields(
+            datacite_entry,
+            ["relationships"]
+        )
         doi_datasets_entries = retrieve_doi_dataset(doi_url)
         if not pub_entry:
             pub_entry = retrieve_data_collection(catalogue_url, doi_datasets_entries[0]["id"])
@@ -903,8 +918,6 @@ def main():
 
         samples_entries = "Not included" if not include_samples else samples_entries
         users_entries = "Not included" if not include_users else users_entries
-
-        citation_entries = ""
 
         instruments_entries = extract_instruments_from_investigations(investigation_entries)
         investigation_entries = [
