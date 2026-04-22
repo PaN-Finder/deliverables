@@ -833,7 +833,7 @@ def main():
     if document_file:
         print(" - document already retrieved {}".format(document_file[0]))
     else:
-        document_file =  output_folder + "/esrf_document_" + safe_doi + ".json"
+        document_file =  output_folder + "/esrf_publication_" + safe_doi + ".json"
         print(" - saving data in file: " + document_file)
 
         print("Retrieving session - BEGIN")

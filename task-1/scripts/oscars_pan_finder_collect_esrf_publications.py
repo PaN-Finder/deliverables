@@ -55,6 +55,7 @@ import re
 #from playwright.sync_api import sync_playwright, expect
 from IPython.display import display, JSON
 import argparse
+import sys
 
 import oscars_pan_finder_settings_esrf as settings
 
@@ -86,6 +87,8 @@ def main():
     retrieve_entries = args.retrieve_entries
     conf_file = args.conf_file
 
+    python_path = sys.executable
+
     print("OSCARS PaN-Finder project - Task 1 - ESRF - oscars_pan_finder_collect_esrf_publications - BEGIN")
     print(datetime.datetime.now().isoformat())
     print("----------------------------------------------------------")
@@ -98,6 +101,7 @@ def main():
     print(f" - Output File                    : {output_file}")
     print(f" - Retrieve Entries               : {retrieve_entries}")
     print(f" - Configuration File             : {conf_file}")
+    print(f" - Python Interpreter             : {python_path}")
 
     # establish session
     print("Retrieving session - BEGIN")
@@ -168,10 +172,12 @@ def main():
             if isinstance(entry["doi"],str) and entry["doi"]:
                 print("BEGIN ============")
                 subprocess.run([
-                    "python",
-                    os.path.abspath("./oscars_pan_finder_collect_esrf_entry.py"),
+                    python_path,
+                    os.path.abspath("./oscars_pan_finder_collect_esrf_publication.py"),
                     "-d",
                     entry["doi"],
+                    "-p",
+                    json.dumps(entry),
                     "-f",
                     "-s",
                     "-u"]
