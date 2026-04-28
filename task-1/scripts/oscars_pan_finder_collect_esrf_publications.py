@@ -55,6 +55,7 @@ import re
 #from playwright.sync_api import sync_playwright, expect
 from IPython.display import display, JSON
 import argparse
+import sys
 
 import oscars_pan_finder_settings_esrf as settings
 
@@ -86,6 +87,8 @@ def main():
     retrieve_entries = args.retrieve_entries
     conf_file = args.conf_file
 
+    python_path = sys.executable
+
     print("OSCARS PaN-Finder project - Task 1 - ESRF - oscars_pan_finder_collect_esrf_publications - BEGIN")
     print(datetime.datetime.now().isoformat())
     print("----------------------------------------------------------")
@@ -98,6 +101,7 @@ def main():
     print(f" - Output File                    : {output_file}")
     print(f" - Retrieve Entries               : {retrieve_entries}")
     print(f" - Configuration File             : {conf_file}")
+    print(f" - Python Interpreter             : {python_path}")
 
     # establish session
     print("Retrieving session - BEGIN")
@@ -163,20 +167,32 @@ def main():
         json.dump(publication_documents,fh)
 
     if retrieve_entries:
+        error_dois = []
         for entry in publication_documents:
             print(f"Collecting publication with DOI {entry['doi']}")
-            if isinstance(entry["doi"],str) and entry["doi"]:
-                print("BEGIN ============")
-                subprocess.run([
-                    "python",
-                    os.path.abspath("./oscars_pan_finder_collect_esrf_entry.py"),
-                    "-d",
-                    entry["doi"],
-                    "-f",
-                    "-s",
-                    "-u"]
-                )
-                print("END ==============")
+            try:
+                if isinstance(entry["doi"],str) and entry["doi"]:
+                    print("BEGIN ============")
+                    subprocess.run([
+                        python_path,
+                        os.path.abspath("./oscars_pan_finder_collect_esrf_publication.py"),
+                        "-d",
+                        entry["doi"],
+                        "-p",
+                        json.dumps(entry),
+                        "-f",
+                        "-s",
+                        "-u"]
+                    )
+                    print("END ==============")
+            except Exception as e:
+                print(f"Error collecting publication with DOI {entry['doi']}")
+                print(e)
+
+        print(f"Collection errors")
+        print(f" - Number of errors {len(error_dois)}")
+        print(f" - DOIs with errors ")
+        print(json.dumps(error_dois))
 
     print("----------------------------------------------------------")
     print(datetime.datetime.now().isoformat())
