@@ -33,11 +33,11 @@ _(Previously: A document containing the metrics collected, the selected componen
 
       Status: Done
 
-- __2.b__  ![Done](images/in_progress.png)  
+- __2.b__  ![Done](images/done.png)  
 Report on current system architecture.  
 _(Previously: A document highlighting the architecture for the RAG system and the LLM models with a set of examples)._  
 
-      Status: In progress
+      Status: Done
 
 ### 3 Main components deployment
 
