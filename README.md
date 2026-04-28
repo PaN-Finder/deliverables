@@ -36,6 +36,7 @@ _(Previously: A document containing the metrics collected, the selected componen
 - __2.b__  ![Done](images/done.png)  
 Report on current system architecture.  
 _(Previously: A document highlighting the architecture for the RAG system and the LLM models with a set of examples)._  
+[PaN-Finder-Deliverable-2-b.pdf](https://github.com/PaN-Finder/deliverables/blob/main/task-2/PaN-Finder-Deliverable-2-b.pdf)  
 
       Status: Done
 
@@ -64,10 +65,11 @@ Produce public documentation including examples
 
       Status: To be done
 
-- __4.c__  ![Done](images/in_progress.png)  
+- __4.c__  ![Done](images/done.png)  
 Code repository with the code and relevant configuration  
+Application code repository available at https://github.com/PaN-Finder/pan-finder
 
-      Status: In Progress
+      Status: Done
 
 ### 5 User Interface
 
@@ -77,10 +79,10 @@ URL: https://pan-finder.panosc.ess.eu/
 
       Status: Done
 
-- __5.b__  ![Done](images/to_be_done.png)  
+- __5.b__  ![Done](images/in_progress.png)  
 New release of the PaNOSC Data Portal in the public code repository  
 
-      Status: To be done
+      Status: In Progress
 
 ### 6 Update strategy
 
