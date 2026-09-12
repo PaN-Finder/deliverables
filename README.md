@@ -47,11 +47,20 @@ Deployment of the RAG and LLMs services on ESS IT infrastructure with dedicated 
 
       Status: Done
 
-- __3.b__  ![Done](images/in_progress.png)  
+- __3.b__  ![Done](images/done.png)  
 Report benchmarks and test pairs.  
-A document containing the tests results  
+A document containing additional information about PaN-Finder benchmarks and benchmarks results  
+[PaN-Finder-Deliverable-3-b.pdf](https://github.com/PaN-Finder/deliverables/blob/main/task-3/PaN-Finder-Deliverable-3-b.pdf)  
 
-      Status: In progress
+      Status: Done
+
+- __3.c__  ![Done](images/done.png)  
+Revised System Benchmarks.  
+_(Important: additional deliverable not included in the original list)._  
+The revised document containing the metrics used proposed and selected for benchmarking.  
+[PaN-Finder-Deliverable-3-c.pdf](https://github.com/PaN-Finder/deliverables/blob/main/task-3/PaN-Finder-Deliverable-3-c.pdf)  
+
+      Status: Done
 
 ### 4 System integration
 
@@ -79,10 +88,10 @@ URL: https://pan-finder.panosc.ess.eu/
 
       Status: Done
 
-- __5.b__  ![Done](images/in_progress.png)  
+- __5.b__  ![Done](images/done.png)  
 New release of the PaNOSC Data Portal in the public code repository  
 
-      Status: In Progress
+      Status: Done
 
 ### 6 Update strategy
 
