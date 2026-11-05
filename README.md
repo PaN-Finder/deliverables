@@ -65,14 +65,16 @@ The revised document containing the metrics used proposed and selected for bench
 ### 4 System integration
 
 - __4.a__  ![Done](images/done.png)  
-Deployment of a single REST API to interact with the system  
+Deployment of a single REST API to interact with the system.  
+URL: https://pan-finder-api.panosc.ess.eu/
 
       Status: Done
 
-- __4.b__  ![Done](images/to_be_done.png)  
+- __4.b__  ![Done](images/done.png)  
 Produce public documentation including examples  
+[PaN-Finder-Deliverable-4-b.pdf](https://github.com/PaN-Finder/deliverables/blob/main/task-4/PaN-Finder-deliverable-4-b.pdf)
 
-      Status: To be done
+      Status: Done
 
 - __4.c__  ![Done](images/done.png)  
 Code repository with the code and relevant configuration  
@@ -151,4 +153,3 @@ The full license text is available in the [GPL-v3-License.txt](./GPL-v3-License.
 More information about the license is available at https://www.gnu.org/licenses/gpl-3.0.en.html.  
   
 ![GPL v3](images/GPLv3_Logo_Simplified_200x80.png)
-
